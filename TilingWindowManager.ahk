@@ -27,9 +27,17 @@ monitorWidth = 1920
 monitorHeight = 1080
 taskbarHeight = 30
 
-;; adjustment syntax
-;; todo: make it work
+;; override system, here you can define a default offset and specific program offsets
+;; this will allow you to setup for custom themes and programs that wont behave
+;; I tried to make this work with WinGetPosEx but even that had many faults
 global windowOverrides                            := Object()
+
+windowOverrides["default"]                   := Object()
+windowOverrides["default"]["left"]           := -8
+windowOverrides["default"]["top"]            := 0
+windowOverrides["default"]["width"]          := +16
+windowOverrides["default"]["height"]         := +8
+
 windowOverrides["explorer.exe"]                   := Object()
 windowOverrides["explorer.exe"]["left"]           := -8
 windowOverrides["explorer.exe"]["top"]            := 0
@@ -71,6 +79,12 @@ windowOverrides["pidgin.exe"]["left"]           := -8
 windowOverrides["pidgin.exe"]["top"]            := 0
 windowOverrides["pidgin.exe"]["width"]          := +16
 windowOverrides["pidgin.exe"]["height"]         := +8
+
+windowOverrides["ApplicationFrameHost.exe"]                   := Object()
+windowOverrides["ApplicationFrameHost.exe"]["left"]           := -8
+windowOverrides["ApplicationFrameHost.exe"]["top"]            := 0
+windowOverrides["ApplicationFrameHost.exe"]["width"]          := +16
+windowOverrides["ApplicationFrameHost.exe"]["height"]         := +8
 
 SysGet, MonitorCount, MonitorCount
 SysGet, MonitorPrimary, MonitorPrimary
@@ -167,6 +181,9 @@ ResizeWinMine(Width = 0,Height = 0, MyLeft = 0, MyTop = 0)
 
     tmpArray := windowOverrides
     ;;PrintArray(tmpArray)
+
+    noOverrides = 1
+
     For index, value in tmpArray{
       ;;MsgBox, index:`t%index%`n
       if(WinActive("ahk_exe" . index)){
@@ -174,8 +191,17 @@ ResizeWinMine(Width = 0,Height = 0, MyLeft = 0, MyTop = 0)
         MyTop := MyTop + windowOverrides[index]["top"]
         Width := Width + windowOverrides[index]["width"]
         Height := Height + windowOverrides[index]["height"]
+        noOverrides = 0
         ;;MsgBox, MyLeft:`t%MyLeft%`n | MyTop:`t%MyTop% | Width:`t%Width% | Height:`t%Height%
       }
+    }
+
+    if(noOverrides == 1) {
+      MyLeft := MyLeft + windowOverrides["default"]["left"]
+      MyTop := MyTop + windowOverrides["default"]["top"]
+      Width := Width + windowOverrides["default"]["width"]
+      Height := Height + windowOverrides["default"]["height"]
+      ;;MsgBox, test2
     }
 
     WinMove,A,,%MyLeft%,%MyTop%,%Width%,%Height%
