@@ -38,6 +38,18 @@ windowOverrides["default"]["top"]            := 0
 windowOverrides["default"]["width"]          := +16
 windowOverrides["default"]["height"]         := +8
 
+windowOverrides["ONENOTE.EXE"]                   := Object()
+windowOverrides["ONENOTE.EXE"]["left"]           := 0
+windowOverrides["ONENOTE.EXE"]["top"]            := 0
+windowOverrides["ONENOTE.EXE"]["width"]          := 0
+windowOverrides["ONENOTE.EXE"]["height"]         := 0
+
+windowOverrides["Steam.exe"]                   := Object()
+windowOverrides["Steam.exe"]["left"]           := 1
+windowOverrides["Steam.exe"]["top"]            := 1
+windowOverrides["Steam.exe"]["width"]          := -2
+windowOverrides["Steam.exe"]["height"]         := -2
+
 windowOverrides["explorer.exe"]                   := Object()
 windowOverrides["explorer.exe"]["left"]           := -8
 windowOverrides["explorer.exe"]["top"]            := 0
