@@ -182,7 +182,7 @@ newZero := 0
 LeftLeftWidth :=  monitorWidthLeft - (windowBorder * 2)
 LeftLeftHeight := newLeftWindowTopHeight
 LeftLeftLeft := (newZero - monitorWidthLeft + 10)
-LeftLeftTop := - 510
+LeftLeftTop := - 506
 
 ;;  ____    _________
 ;; |   |   |     |___| -- LeftRight
@@ -191,7 +191,7 @@ LeftLeftTop := - 510
 LeftRightWidth :=  monitorWidthLeft - (windowBorder * 2)
 LeftRightHeight := newLeftWindowBotHeight + windowBorder * 2 - 5
 LeftRighteft := (newZero - monitorWidthLeft + 10)
-LeftRightTop := - 510 + newLeftWindowTopHeight + windowBorder
+LeftRightTop := - 506 + newLeftWindowTopHeight + windowBorder
 
 ;;  _________     _________
 ;; |   |     |   |     |___| -- RightLeft

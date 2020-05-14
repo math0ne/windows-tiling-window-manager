@@ -27,9 +27,6 @@ monitorWidth = 1920
 monitorHeight = 1080
 taskbarHeight = 30
 
-monitorWidthLeft = 1440
-monitorheightRight = 2560
-
 ;; override system, here you can define a default offset and specific program offsets
 ;; this will allow you to setup for custom themes and programs that wont behave
 ;; I tried to make this work with WinGetPosEx but even that had many faults
@@ -101,43 +98,6 @@ windowOverrides["ApplicationFrameHost.exe"]["top"]            := 0
 windowOverrides["ApplicationFrameHost.exe"]["width"]          := +16
 windowOverrides["ApplicationFrameHost.exe"]["height"]         := +8
 
-windowOverrides["Code.exe"]                   := Object()
-windowOverrides["Code.exe"]["left"]           := 0
-windowOverrides["Code.exe"]["top"]            := 0
-windowOverrides["Code.exe"]["width"]          := 0
-windowOverrides["Code.exe"]["height"]         := 0
-
-windowOverrides["slack.exe"]                   := Object()
-windowOverrides["slack.exe"]["left"]           := 0
-windowOverrides["slack.exe"]["top"]            := 0
-windowOverrides["slack.exe"]["width"]          := 0
-windowOverrides["slack.exe"]["height"]         := 0
-
-windowOverrides["Spotify.exe"]                   := Object()
-windowOverrides["Spotify.exe"]["left"]           := 0
-windowOverrides["Spotify.exe"]["top"]            := 0
-windowOverrides["Spotify.exe"]["width"]          := 0
-windowOverrides["Spotify.exe"]["height"]         := 0
-
-windowOverrides["Photoshop.exe"]                   := Object()
-windowOverrides["Photoshop.exe"]["left"]           := 0
-windowOverrides["Photoshop.exe"]["top"]            := 0
-windowOverrides["Photoshop.exe"]["width"]          := 0
-windowOverrides["Photoshop.exe"]["height"]         := 0
-
-windowOverrides["EXCEL.EXE"]                   := Object()
-windowOverrides["EXCEL.EXE"]["left"]           := 0
-windowOverrides["EXCEL.EXE"]["top"]            := 0
-windowOverrides["EXCEL.EXE"]["width"]          := 0
-windowOverrides["EXCEL.EXE"]["height"]         := 0
-
-windowOverrides["Discord.exe"]                   := Object()
-windowOverrides["Discord.exe"]["left"]           := 0
-windowOverrides["Discord.exe"]["top"]            := 0
-windowOverrides["Discord.exe"]["width"]          := 0
-windowOverrides["Discord.exe"]["height"]         := 0
-
-
 SysGet, MonitorCount, MonitorCount
 SysGet, MonitorPrimary, MonitorPrimary
 ;;MsgBox, Monitor Count:`t%MonitorCount%`nPrimary Monitor:`t%MonitorPrimary%
@@ -165,33 +125,25 @@ windowHeightTall := monitorHeight - (windowBorder * 2)
 windowHeightTallTaskbar := monitorHeight - (windowBorder * 2) - taskbarHeight
 windowRightWidth := monitorWidth - windowLeftWidth - (windowBorder * 3)
 
-newLeftWindowWidth := monitorWidthLeft - (windowBorder * 2)
-newLeftWindowTopHeight := 800
-newLeftWindowBotHeight := 1715
+;;  _________     _________
+;; |   |     |   |     |___| -- LeftLeft
+;; | X |     |   |     |   |
+;; '---i-----'   '-----i---'
+LeftLeftWidth := windowLeftWidth
+LeftLeftHeight := windowHeightTall
+LeftLeftLeft := monitorBorderLeft + windowBorder + monitorWidth
+LeftLeftTop := windowBorder
 
-vertWindowWidth := monitorHeight - (windowBorder * 2)
-vertWindowWTopHeight := 2000
-vertWindowWBotHeight := monitorWidth - vertWindowWTopHeight - (windowBorder * 2) - taskbarHeight
+;;  _________     _________
+;; |   |     |   |     |___| -- LeftRight
+;; |   |  X  |   |     |   |
+;; '---i-----'   '-----i---'
+LeftRightWidth := windowRightWidth
+LeftRightHeight := windowHeightTall
+LeftRightLeft := windowLeftWidth + (windowBorder * 2) + monitorWidth
+LeftRightTop := windowBorder
 
-newZero := 0
-
-;;  ___     _________
-;; | x |   |     |___| -- LeftLeft
-;; |   |   |     |   |
-;; '---i   '-----i---'
-LeftLeftWidth :=  monitorWidthLeft - (windowBorder * 2)
-LeftLeftHeight := newLeftWindowTopHeight
-LeftLeftLeft := (newZero - monitorWidthLeft + 10)
-LeftLeftTop := - 510
-
-;;  ____    _________
-;; |   |   |     |___| -- LeftRight
-;; | x |   |     |   |
-;; '---i   '-----i---'
-LeftRightWidth :=  monitorWidthLeft - (windowBorder * 2)
-LeftRightHeight := newLeftWindowBotHeight + windowBorder * 2 - 5
-LeftRighteft := (newZero - monitorWidthLeft + 10)
-LeftRightTop := - 510 + newLeftWindowTopHeight + windowBorder
+LeftRightLeftNEW := windowRightWidth + (windowBorder * 2) + monitorWidth
 
 ;;  _________     _________
 ;; |   |     |   |     |___| -- RightLeft
@@ -293,8 +245,16 @@ Menu, Tray, Add, &Right Right Small Bottom, RightSmallBottom
 #e::ResizeWinMine(RightRightTopWidth,RightRightTopHeight, RightRightTopLeft, RightRightTopTop)
 #d::ResizeWinMine(RightRightBotWidth,RightRightBotHeight, RightRightBotLeft, RightRightBotTop)
 
-#z::ResizeWinMine(LeftLeftWidth,LeftLeftHeight, LeftLeftLeft, LeftLeftTop)
-#x::ResizeWinMine(LeftRightWidth,LeftRightHeight, LeftRighteft, LeftRightTop)
+;; no borders
+#z::ResizeWinMine(RightLeftWidth + (windowBorder),RightLeftHeight + (windowBorder * 2), RightLeftLeft - windowBorder, RightLeftTop - windowBorder)
+#x::ResizeWinMine(RightRightWidth + (windowBorder * 2),RightRightHeight + (windowBorder * 2), RightRightLeft - windowBorder, RightRightTop - windowBorder)
+#c::ResizeWinMine(LeftLeftWidth + (windowBorder),LeftLeftHeight + (windowBorder * 2), LeftLeftLeft - windowBorder, LeftLeftTop - windowBorder)
+#v::ResizeWinMine(LeftRightWidth + (windowBorder * 2),LeftRightHeight + (windowBorder * 2), LeftRightLeft - windowBorder, LeftRightTop - windowBorder)
+
+;; second change
+#b::ResizeWinMine(LeftRightWidth + (windowBorder) + 150,LeftLeftHeight + (windowBorder * 2), LeftLeftLeft - windowBorder, LeftLeftTop - windowBorder)
+#n::ResizeWinMine(LeftLeftWidth + (windowBorder * 2) - 150,LeftRightHeight + (windowBorder * 2), LeftRightLeftNEW - windowBorder + 150, LeftRightTop - windowBorder)
+
 
 ;; menu items
 ;; for the menu we have to activate the previos window (may not be perfect in all case)

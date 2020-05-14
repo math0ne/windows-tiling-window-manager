@@ -12,23 +12,7 @@
 
 ;; -- window sizing options
 
-;; size of space between windows
-windowBorder = 10
-;; width of the large windows that appear closest to the center of the screen
-windowLeftWidth = 1200
-;; height of the small top right window
-windowRightSmallTopHeight = 550
 
-;; monitor geometry
-;; todo: automate this
-monitorBorderRight = 1920
-monitorBorderLeft = 0
-monitorWidth = 1920
-monitorHeight = 1080
-taskbarHeight = 30
-
-monitorWidthLeft = 1440
-monitorheightRight = 2560
 
 ;; override system, here you can define a default offset and specific program offsets
 ;; this will allow you to setup for custom themes and programs that wont behave
@@ -107,6 +91,12 @@ windowOverrides["Code.exe"]["top"]            := 0
 windowOverrides["Code.exe"]["width"]          := 0
 windowOverrides["Code.exe"]["height"]         := 0
 
+windowOverrides["Code - Insiders.exe"]                   := Object()
+windowOverrides["Code - Insiders.exe"]["left"]           := 0
+windowOverrides["Code - Insiders.exe"]["top"]            := 0
+windowOverrides["Code - Insiders.exe"]["width"]          := 0
+windowOverrides["Code - Insiders.exe"]["height"]         := 0
+
 windowOverrides["slack.exe"]                   := Object()
 windowOverrides["slack.exe"]["left"]           := 0
 windowOverrides["slack.exe"]["top"]            := 0
@@ -137,6 +127,23 @@ windowOverrides["Discord.exe"]["top"]            := 0
 windowOverrides["Discord.exe"]["width"]          := 0
 windowOverrides["Discord.exe"]["height"]         := 0
 
+windowOverrides["Ripcord.exe"]                   := Object()
+windowOverrides["Ripcord.exe"]["left"]           := 0
+windowOverrides["Ripcord.exe"]["top"]            := 0
+windowOverrides["Ripcord.exe"]["width"]          := 0
+windowOverrides["Ripcord.exe"]["height"]         := 0
+
+windowOverrides["Battle.net.exe"]                   := Object()
+windowOverrides["Battle.net.exe"]["left"]           := 0
+windowOverrides["Battle.net.exe"]["top"]            := 0
+windowOverrides["Battle.net.exe"]["width"]          := 0
+windowOverrides["Battle.net.exe"]["height"]         := 0
+
+windowOverrides["Messenger.exe"]                   := Object()
+windowOverrides["Messenger.exe"]["left"]           := 0
+windowOverrides["Messenger.exe"]["top"]            := 0
+windowOverrides["Messenger.exe"]["width"]          := 0
+windowOverrides["Messenger.exe"]["height"]         := 0
 
 SysGet, MonitorCount, MonitorCount
 SysGet, MonitorPrimary, MonitorPrimary
@@ -159,75 +166,144 @@ Loop, %MonitorCount%
 ;; * Monitor2: -1920
 ;; * Monitor1: 0
 
+;; size of space between windows
+windowBorder = 10
+;; width of the large windows that appear closest to the center of the screen
+windowLeftWidth = 1260
+;; height of the small top right window
+windowRightSmallTopHeight = 700
+
+topWindowTriWidth = 843
+
+;; monitor geometry
+;; todo: automate this
+monitorWidth = 2560
+monitorHeight = 1440
+taskbarHeight = 30
 
 ;;calculated variables used below
 windowHeightTall := monitorHeight - (windowBorder * 2)
 windowHeightTallTaskbar := monitorHeight - (windowBorder * 2) - taskbarHeight
 windowRightWidth := monitorWidth - windowLeftWidth - (windowBorder * 3)
 
-newLeftWindowWidth := monitorWidthLeft - (windowBorder * 2)
-newLeftWindowTopHeight := 800
-newLeftWindowBotHeight := 1715
-
-vertWindowWidth := monitorHeight - (windowBorder * 2)
-vertWindowWTopHeight := 2000
-vertWindowWBotHeight := monitorWidth - vertWindowWTopHeight - (windowBorder * 2) - taskbarHeight
-
 newZero := 0
 
-;;  ___     _________
-;; | x |   |     |___| -- LeftLeft
-;; |   |   |     |   |
-;; '---i   '-----i---'
-LeftLeftWidth :=  monitorWidthLeft - (windowBorder * 2)
-LeftLeftHeight := newLeftWindowTopHeight
-LeftLeftLeft := (newZero - monitorWidthLeft + 10)
-LeftLeftTop := - 510
+;;  _________
+;; |    |    |  -- BotLeft
+;; |    |    |
+;; '----i----'
+;;  _________
+;; | xx |    |  
+;; | xx |    |
+;; '----i----'
+botLeftWidth :=  windowLeftWidth
+botLeftHeight := windowHeightTallTaskbar
+botLeftLeft := windowBorder
+botLeftTop := windowBorder
 
-;;  ____    _________
-;; |   |   |     |___| -- LeftRight
-;; | x |   |     |   |
-;; '---i   '-----i---'
-LeftRightWidth :=  monitorWidthLeft - (windowBorder * 2)
-LeftRightHeight := newLeftWindowBotHeight + windowBorder * 2 - 5
-LeftRighteft := (newZero - monitorWidthLeft + 10)
-LeftRightTop := - 510 + newLeftWindowTopHeight + windowBorder
+;;  _________
+;; |    |    |  -- BotRight
+;; |    |    |
+;; '----i----'
+;;  _________
+;; |    | xx |  
+;; |    | xx |
+;; '----i----'
+botRightWidth :=  monitorWidth - windowLeftWidth - (windowBorder * 3)
+botRightHeight := windowHeightTallTaskbar
+botRightLeft := windowLeftWidth + (windowBorder * 2)
+botRightTop := windowBorder
 
-;;  _________     _________
-;; |   |     |   |     |___| -- RightLeft
-;; |   |     |   |  X  |   |
-;; '---i-----'   '-----i---'
-RightLeftWidth := windowLeftWidth
-RightLeftHeight := windowHeightTallTaskbar
-RightLeftLeft := windowBorder
-RightLeftTop := windowBorder
+;;  _________
+;; |    |    |  -- BotRightTop
+;; |    |    |
+;; '----i----'
+;;  _________
+;; |    |_xx_|  
+;; |    |    |
+;; '----i----'
+BotRightTopWidth :=  monitorWidth - windowLeftWidth - (windowBorder * 3)
+BotRightTopHeight := windowRightSmallTopHeight
+BotRightTopLeft := windowLeftWidth + (windowBorder * 2)
+BotRightTopTop := windowBorder
 
-;;  _________     _________
-;; |   |     |   |     |   | -- RightRight
-;; |   |     |   |     | X |
-;; '---i-----'   '-----i---'
-RightRightWidth := windowRightWidth
-RightRightHeight := windowHeightTallTaskbar
-RightRightLeft := windowLeftWidth + (windowBorder * 2)
-RightRightTop := windowBorder
+;;  _________
+;; |    |    |  -- BotRightBottom
+;; |    |    |
+;; '----i----'
+;;  _________
+;; |    |____|  
+;; |    | xx |
+;; '----i----'
+BotRightBottomtWidth :=  monitorWidth - windowLeftWidth - (windowBorder * 3)
+BotRightBottomHeight := monitorHeight - windowRightSmallTopHeight - (windowBorder * 3) - taskbarHeight
+BotRightBottomLeft := windowLeftWidth + (windowBorder * 2)
+BotRightBottomTop := windowRightSmallTopHeight + (windowBorder * 2)
 
-;;  _________     _________
-;; |   |     |   |     |_X_| -- RightRightTop
-;; |   |     |   |     |   |
-;; '---i-----'   '-----i---'
-RightRightTopWidth := windowRightWidth
-RightRightTopHeight := windowRightSmallTopHeight
-RightRightTopLeft := windowLeftWidth + (windowBorder * 2)
-RightRightTopTop := windowBorder
+;;  _________
+;; | xx |    |  -- TopLeft
+;; | xx |    |
+;; '----i----'
+;;  _________
+;; |    |    |  
+;; |    |    |
+;; '----i----'
+TopLeftWidth :=  windowLeftWidth
+TopLeftHeight := windowHeightTall
+TopLeftLeft := windowBorder
+TopLeftTop := windowBorder - monitorHeight
 
-;;  _________     _________
-;; |   |     |   |     |___| -- RightRightTop
-;; |   |     |   |     | X |
-;; '---i-----'   '-----i---'
-RightRightBotWidth := windowRightWidth
-RightRightBotHeight := monitorHeight - taskbarHeight - (windowBorder * 3) - windowRightSmallTopHeight
-RightRightBotLeft := windowLeftWidth + (windowBorder * 2)
-RightRightBotTop := windowRightSmallTopHeight + (windowBorder * 2)
+;;  _________
+;; |    | xx |  -- TopRight
+;; |    | xx |
+;; '----i----'
+;;  _________
+;; |    |    |  
+;; |    |    |
+;; '----i----'
+TopRightWidth :=  monitorWidth - windowLeftWidth - (windowBorder * 3)
+TopRightHeight := windowHeightTall
+TopRightLeft := windowLeftWidth + (windowBorder * 2)
+TopRightTop := windowBorder - monitorHeight
+
+;;  _________
+;; | x|   |  |  -- TriTopLeft
+;; |  |   |  |
+;; '---------'
+;;  _________
+;; |    |    |  
+;; |    |    |
+;; '----i----'
+TriTopLeftWidth := topWindowTriWidth
+TriTopLeftHeight := windowHeightTall
+TriTopLeftLeft := windowBorder
+TriTopLeftTop := windowBorder - monitorHeight
+
+;;  _________
+;; |  | x |  |  -- TriTopMiddle
+;; |  |   |  |
+;; '---------'
+;;  _________
+;; |    |    |  
+;; |    |    |
+;; '----i----'
+TriTopMiddleWidth := topWindowTriWidth - windowBorder
+TriTopMiddleHeight := windowHeightTall
+TriTopMiddleLeft := (windowBorder * 2) + topWindowTriWidth
+TriTopMiddleTop := windowBorder - monitorHeight
+
+;;  _________
+;; |  |   | x|  -- TriTopRight
+;; |  |   |  |
+;; '---------'
+;;  _________
+;; |    |    |  
+;; |    |    |
+;; '----i----'
+TriTopRightWidth := topWindowTriWidth
+TriTopRightHeight := windowHeightTall
+TriTopRightLeft := (windowBorder * 2) + (topWindowTriWidth * 2)
+TriTopRightTop := windowBorder - monitorHeight
 
 ;; simplified winmove function call
 ResizeWinMine(Width = 0,Height = 0, MyLeft = 0, MyTop = 0)
@@ -284,17 +360,18 @@ Menu, Tray, Add
 Menu, Tray, Add, &Right Right Small Top, RightSmallTop
 Menu, Tray, Add, &Right Right Small Bottom, RightSmallBottom
 
-;; keyboard shortcuts
-#a::ResizeWinMine(LeftLeftWidth,LeftLeftHeight, LeftLeftLeft, LeftLeftTop)
-#s::ResizeWinMine(LeftRightWidth,LeftRightHeight, LeftRightLeft, LeftRightTop)
+#1::ResizeWinMine(TriTopLeftWidth, TriTopLeftHeight, TriTopLeftLeft, TriTopLeftTop)
+#2::ResizeWinMine(TriTopMiddleWidth, TriTopMiddleHeight, TriTopMiddleLeft, TriTopMiddleTop)
+#3::ResizeWinMine(TriTopRightWidth, TriTopRightHeight, TriTopRightLeft, TriTopRightTop)
 
-#q::ResizeWinMine(RightLeftWidth,RightLeftHeight, RightLeftLeft, RightLeftTop)
-#w::ResizeWinMine(RightRightWidth,RightRightHeight, RightRightLeft, RightRightTop)
-#e::ResizeWinMine(RightRightTopWidth,RightRightTopHeight, RightRightTopLeft, RightRightTopTop)
-#d::ResizeWinMine(RightRightBotWidth,RightRightBotHeight, RightRightBotLeft, RightRightBotTop)
+#q::ResizeWinMine(TopLeftWidth, TopLeftHeight, TopLeftLeft, TopLeftTop)
+#w::ResizeWinMine(TopRightWidth, TopRightHeight, TopRightLeft, TopRightTop)
 
-#z::ResizeWinMine(LeftLeftWidth,LeftLeftHeight, LeftLeftLeft, LeftLeftTop)
-#x::ResizeWinMine(LeftRightWidth,LeftRightHeight, LeftRighteft, LeftRightTop)
+#a::ResizeWinMine(botLeftWidth, botLeftHeight, botLeftLeft, botLeftTop)
+#s::ResizeWinMine(botRightWidth, botRightHeight, botRightLeft, botRightTop)
+
+#e::ResizeWinMine(BotRightTopWidth, BotRightTopHeight, BotRightTopLeft, BotRightTopTop)
+#d::ResizeWinMine(BotRightBottomtWidth, BotRightBottomHeight, BotRightBottomLeft, BotRightBottomTop)
 
 ;; menu items
 ;; for the menu we have to activate the previos window (may not be perfect in all case)
